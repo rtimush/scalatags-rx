@@ -36,6 +36,9 @@ object RxDom {
   implicit val rxDoublePixelStyle = rxPixelStyleValuePx[Double]
   implicit val varDoublePixelStyle = varPixelStyleValuePx[Double]
 
+  implicit def rxAttrValue[T: AttrValue]: AttrValue[Rx[T]] = new RxAttrValue[T, Rx[T]]
+  implicit def varAttrValue[T: AttrValue]: AttrValue[Var[T]] = new RxAttrValue[T, Var[T]]
+
   private trait ReferenceHolder extends js.Object {
     var `scalatags.rx.refs`: js.UndefOr[js.Array[Any]] = js.native
   }
@@ -60,5 +63,10 @@ object RxDom {
     def apply(s: Style, v: F) = StylePair(s, v.map(_ + "px"), ev)
   }
 
+  class RxAttrValue[T, F <: Rx[T]](implicit av: AttrValue[T]) extends AttrValue[F] {
+    override def apply(t: Element, a: Attr, rv: F): Unit = {
+      rv foreach { v => av.apply(t, a, v)} attachTo t
+    }
+  }
 
 }

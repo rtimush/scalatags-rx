@@ -48,5 +48,25 @@ object RxDomSuite extends TestSuite {
       val node = div(width := (c: Rx[Int])).render
       test(c, node.style.getPropertyValue("width"), "10px", 20 -> "20px")
     }
+    "Var[String] attribute" - {
+      val c = Var("10px")
+      val node = div(widthA := c).render
+      test(c, node.getAttribute("width"), "10px", "20px")
+    }
+    "Rx[String] pixel style" - {
+      val c = Var("10px")
+      val node = div(widthA := (c: Rx[String])).render
+      test(c, node.getAttribute("width"), "10px", "20px")
+    }
+    "Var[Int] attribute" - {
+      val c = Var(10)
+      val node = div(widthA := c).render
+      test(c, node.getAttribute("width"), "10", 20 -> "20")
+    }
+    "Rx[Int] attribute" - {
+      val c = Var(10)
+      val node = div(widthA := (c: Rx[Int])).render
+      test(c, node.getAttribute("width"), "10", 20 -> "20")
+    }
   }
 }
