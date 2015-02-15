@@ -1,5 +1,6 @@
 package scalatags.rx
 
+import org.scalajs.dom.Element
 import rx._
 import utest._
 import utest.framework.TestSuite
@@ -86,6 +87,16 @@ object RxDomSuite extends TestSuite {
       d() = "x"
       c() = "y"
       assert(node.textContent == "yx")
+    }
+    "Var[Element] node" - {
+      val c = Var[Element](div().render)
+      val node = div(c).render
+      test(c, node.innerHTML, "<div/>", span().render -> "<span/>")
+    }
+    "Rx[Element] node" - {
+      val c = Var[Element](div().render)
+      val node = div(c: Rx[Element]).render
+      test(c, node.innerHTML, "<div/>", span().render -> "<span/>")
     }
   }
 }

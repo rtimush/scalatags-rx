@@ -1,5 +1,7 @@
 package scalatags.rx
 
+import java.util.concurrent.atomic.AtomicReference
+
 import org.scalajs.dom
 import org.scalajs.dom.{Element, Node}
 import rx._
@@ -79,6 +81,17 @@ object RxDom {
       val node = dom.document.createTextNode(v())
       v foreach { s => node.replaceData(0, node.length, s)} attachTo node
       node
+    }
+  }
+
+  implicit class bindElement[T <: dom.Element](e: Rx[T]) extends Modifier {
+    def applyTo(t: Element) = {
+      val element = new AtomicReference(e())
+      t.appendChild(element.get())
+      e foreach( { current =>
+        val previous = element getAndSet current
+        t.replaceChild(current, previous)
+      }, skipInitial = true) attachTo t
     }
   }
 
