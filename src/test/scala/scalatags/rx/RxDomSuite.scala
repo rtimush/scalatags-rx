@@ -68,5 +68,24 @@ object RxDomSuite extends TestSuite {
       val node = div(widthA := (c: Rx[Int])).render
       test(c, node.getAttribute("width"), "10", 20 -> "20")
     }
+    "Var[String] text node" - {
+      val c = Var("a")
+      val node = span(c).render
+      test(c, node.textContent, "a", "b")
+    }
+    "Rx[String] text node" - {
+      val c = Var("a")
+      val node = span(c: Rx[String]).render
+      test(c, node.textContent, "a", "b")
+    }
+    "Rx[String] text node join" - {
+      val c = Var("")
+      val d = Var("")
+      val node = span(c, d).render
+      assert(node.textContent == "")
+      d() = "x"
+      c() = "y"
+      assert(node.textContent == "yx")
+    }
   }
 }

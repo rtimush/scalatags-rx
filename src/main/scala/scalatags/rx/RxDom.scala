@@ -1,6 +1,7 @@
 package scalatags.rx
 
-import org.scalajs.dom.Element
+import org.scalajs.dom
+import org.scalajs.dom.{Element, Node}
 import rx._
 import rx.ops._
 
@@ -8,6 +9,7 @@ import scala.language.implicitConversions
 import scala.scalajs.js
 import scalatags.JsDom.all._
 import scalatags.generic.{Style, StylePair}
+import scalatags.jsdom
 
 object RxDom {
 
@@ -39,12 +41,15 @@ object RxDom {
   implicit def rxAttrValue[T: AttrValue]: AttrValue[Rx[T]] = new RxAttrValue[T, Rx[T]]
   implicit def varAttrValue[T: AttrValue]: AttrValue[Var[T]] = new RxAttrValue[T, Var[T]]
 
+  implicit def rxStringFrag(v: Rx[String]): RxStringFrag[Rx[String]] = new RxStringFrag[Rx[String]](v)
+  implicit def varStringFrag(v: Var[String]): RxStringFrag[Var[String]] = new RxStringFrag[Var[String]](v)
+
   private trait ReferenceHolder extends js.Object {
     var `scalatags.rx.refs`: js.UndefOr[js.Array[Any]] = js.native
   }
 
   implicit class ObsExt(val o: Obs) extends AnyVal {
-    def attachTo(e: Element): Unit = {
+    def attachTo(e: Node): Unit = {
       val holder = e.asInstanceOf[ReferenceHolder]
       if (holder.`scalatags.rx.refs`.isEmpty) {
         holder.`scalatags.rx.refs` = js.Array[Any]()
@@ -66,6 +71,14 @@ object RxDom {
   class RxAttrValue[T, F <: Rx[T]](implicit av: AttrValue[T]) extends AttrValue[F] {
     override def apply(t: Element, a: Attr, rv: F): Unit = {
       rv foreach { v => av.apply(t, a, v)} attachTo t
+    }
+  }
+
+  class RxStringFrag[F <: Rx[String]](v: F) extends jsdom.Frag {
+    def render: dom.Text = {
+      val node = dom.document.createTextNode(v())
+      v foreach { s => node.replaceData(0, node.length, s)} attachTo node
+      node
     }
   }
 
