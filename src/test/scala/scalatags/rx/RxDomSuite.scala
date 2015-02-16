@@ -98,5 +98,30 @@ object RxDomSuite extends TestSuite {
       val node = div(c: Rx[Element]).render
       test(c, node.innerHTML, "<div/>", span().render -> "<span/>")
     }
+    "Var[Vector[Element]] node" - {
+      val c = Var[Vector[Element]](Vector(div().render))
+      val node = div(c).render
+      test(c, node.innerHTML, "<div/>", Vector(span().render) -> "<span/>")
+    }
+    "Rx[Vector[Element]] node" - {
+      val c = Var[Vector[Element]](Vector(div().render))
+      val node = div(c: Rx[Vector[Element]]).render
+      test(c, node.innerHTML, "<div/>", Vector(span().render) -> "<span/>")
+    }
+    "Var[Vector[Element]] node join" - {
+      val c = Var[Vector[Element]](Vector())
+      val d = Var[Vector[Element]](Vector())
+      val node = div(c, d).render
+      "first to last" - {
+        c() = Vector(div().render)
+        d() = Vector(span().render)
+        assert(node.innerHTML == "<div/><span/>")
+      }
+      "last to first" - {
+        d() = Vector(span().render)
+        c() = Vector(div().render)
+        assert(node.innerHTML == "<div/><span/>")
+      }
+    }
   }
 }

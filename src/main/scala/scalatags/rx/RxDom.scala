@@ -3,10 +3,13 @@ package scalatags.rx
 import java.util.concurrent.atomic.AtomicReference
 
 import org.scalajs.dom
+import org.scalajs.dom.ext._
+import org.scalajs.dom.raw.Comment
 import org.scalajs.dom.{Element, Node}
 import rx._
 import rx.ops._
 
+import scala.collection.immutable
 import scala.language.implicitConversions
 import scala.scalajs.js
 import scalatags.JsDom.all._
@@ -92,6 +95,26 @@ object RxDom {
         val previous = element getAndSet current
         t.replaceChild(current, previous)
       }, skipInitial = true) attachTo t
+    }
+  }
+
+  implicit class bindElements(e: Rx[immutable.Iterable[Element]]) extends Modifier {
+    def applyTo(t: Element) = {
+      val nonEmpty = e.map { t => if (t.isEmpty) List(new Comment) else t}
+      val fragments = new AtomicReference(nonEmpty())
+      nonEmpty() foreach t.appendChild
+      nonEmpty foreach( { current =>
+        val previous = fragments getAndSet current
+        val i = t.childNodes.indexOf(previous.head)
+        if (i < 0) throw new IllegalStateException("Children changed")
+        0 to (previous.size - 1) foreach (_ => t.removeChild(t.childNodes.item(i)))
+        if (t.childNodes.length > i) {
+          val next = t.childNodes.item(i)
+          current foreach (t.insertBefore(_, next))
+        } else {
+          current foreach t.appendChild
+        }
+      }, skipInitial = true)
     }
   }
 
