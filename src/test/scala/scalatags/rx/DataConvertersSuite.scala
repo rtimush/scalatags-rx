@@ -5,7 +5,7 @@ import utest._
 import utest.framework.TestSuite
 
 import scalatags.DataConverters._
-import scalatags.rx.DataConverters._
+import scalatags.rx.all._
 
 object DataConvertersSuite extends TestSuite {
   val tests = TestSuite {

@@ -6,7 +6,7 @@ import utest._
 import utest.framework.TestSuite
 
 import scalatags.JsDom.all._
-import scalatags.rx.RxDom._
+import scalatags.rx.all._
 
 object RxDomSuite extends TestSuite {
 
