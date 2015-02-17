@@ -1,4 +1,6 @@
+organization := "com.timushev"
 name := "scalatags-rx"
+version := "0.1.0-SNAPSHOT"
 
 scalaVersion := "2.11.5"
 
