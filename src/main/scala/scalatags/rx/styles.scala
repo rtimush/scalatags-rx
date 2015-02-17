@@ -4,45 +4,44 @@ import org.scalajs.dom._
 import rx._
 import rx.ops._
 
+import scala.language.implicitConversions
 import scalatags.JsDom.all._
 import scalatags.generic.{Style, StylePair}
 import scalatags.rx.ext._
 
 trait RxStyleInstances {
 
-  implicit def rxStyleValue[T: StyleValue]: StyleValue[Rx[T]] = new RxStyleValue[T, Rx[T]]
-  implicit def varStyleValue[T: StyleValue]: StyleValue[Var[T]] = new RxStyleValue[T, Var[T]]
+  implicit def varIsRxForStyleValue[T](implicit x: StyleValue[Rx[T]]): StyleValue[Var[T]] =
+    new StyleValue[Var[T]] {
+      override def apply(t: Element, s: Style, v: Var[T]): Unit = x.apply(t, s, v)
+    }
+  implicit def varIsRxForPixelStyleValue[T](implicit x: PixelStyleValue[Rx[T]]): PixelStyleValue[Var[T]] =
+    new PixelStyleValue[Var[T]] {
+      override def apply(s: Style, v: Var[T]): StylePair[Element, _] = x.apply(s, v)
+    }
+
+  implicit def rxStyleValue[T: StyleValue]: StyleValue[Rx[T]] = new RxStyleValue[T]
 
   def rxPixelStyleValue[T: StyleValue]: PixelStyleValue[Rx[T]] = genericPixelStyle[Rx[T]]
-  def varPixelStyleValue[T: StyleValue]: PixelStyleValue[Var[T]] = genericPixelStyle[Var[T]]
-  def rxPixelStyleValuePx[T](implicit ev: StyleValue[Rx[String]]): PixelStyleValue[Rx[T]] = new RxGenericPixelStylePx[T, Rx[T]](ev)
-  def varPixelStyleValuePx[T](implicit ev: StyleValue[Rx[String]]): PixelStyleValue[Var[T]] = new RxGenericPixelStylePx[T, Var[T]](ev)
+  def rxPixelStyleValuePx[T](implicit ev: StyleValue[Rx[String]]): PixelStyleValue[Rx[T]] = new RxGenericPixelStylePx[T](ev)
 
   implicit val rxStringPixelStyle = rxPixelStyleValue[String]
-  implicit val varStringPixelStyle = varPixelStyleValue[String]
   implicit val rxBooleanPixelStyle = rxPixelStyleValue[Boolean]
-  implicit val varBooleanPixelStyle = varPixelStyleValue[Boolean]
   implicit val rxBytePixelStyle = rxPixelStyleValuePx[Byte]
-  implicit val varBytePixelStyle = varPixelStyleValuePx[Byte]
   implicit val rxShortPixelStyle = rxPixelStyleValuePx[Short]
-  implicit val varShortPixelStyle = varPixelStyleValuePx[Short]
   implicit val rxIntPixelStyle = rxPixelStyleValuePx[Int]
-  implicit val varIntPixelStyle = varPixelStyleValuePx[Int]
   implicit val rxLongPixelStyle = rxPixelStyleValuePx[Long]
-  implicit val varLongPixelStyle = varPixelStyleValuePx[Long]
   implicit val rxFloatPixelStyle = rxPixelStyleValuePx[Float]
-  implicit val varFloatPixelStyle = varPixelStyleValuePx[Float]
   implicit val rxDoublePixelStyle = rxPixelStyleValuePx[Double]
-  implicit val varDoublePixelStyle = varPixelStyleValuePx[Double]
 
-  class RxStyleValue[T, F <: Rx[T]](implicit sv: StyleValue[T]) extends StyleValue[F] {
-    override def apply(t: Element, s: Style, rv: F): Unit = {
+  class RxStyleValue[T](implicit sv: StyleValue[T]) extends StyleValue[Rx[T]] {
+    override def apply(t: Element, s: Style, rv: Rx[T]): Unit = {
       rv foreach { v => sv.apply(t, s, v)} attachTo t
     }
   }
 
-  class RxGenericPixelStylePx[T, F <: Rx[T]](ev: StyleValue[Rx[String]]) extends PixelStyleValue[F] {
-    def apply(s: Style, v: F) = StylePair(s, v.map(_ + "px"), ev)
+  class RxGenericPixelStylePx[T](ev: StyleValue[Rx[String]]) extends PixelStyleValue[Rx[T]] {
+    def apply(s: Style, v: Rx[T]) = StylePair(s, v.map(_ + "px"), ev)
   }
-  
+
 }

@@ -17,10 +17,7 @@ import scalatags.rx.ext._
 
 trait RxNodeInstances {
 
-  implicit def rxStringFrag(v: Rx[String]): RxStringFrag[Rx[String]] = new RxStringFrag[Rx[String]](v)
-  implicit def varStringFrag(v: Var[String]): RxStringFrag[Var[String]] = new RxStringFrag[Var[String]](v)
-
-  class RxStringFrag[F <: Rx[String]](v: F) extends jsdom.Frag {
+  implicit class rxStringFrag(v: Rx[String]) extends jsdom.Frag {
     def render: dom.Text = {
       val node = dom.document.createTextNode(v())
       v foreach { s => node.replaceData(0, node.length, s)} attachTo node
@@ -28,7 +25,7 @@ trait RxNodeInstances {
     }
   }
 
-  implicit class bindElement[T <: dom.Element](e: Rx[T]) extends Modifier {
+  implicit class bindRxElement[T <: dom.Element](e: Rx[T]) extends Modifier {
     def applyTo(t: Element) = {
       val element = new AtomicReference(e())
       t.appendChild(element.get())
@@ -39,7 +36,7 @@ trait RxNodeInstances {
     }
   }
 
-  implicit class bindElements(e: Rx[immutable.Iterable[Element]]) extends Modifier {
+  implicit class bindRxElements(e: Rx[immutable.Iterable[Element]]) extends Modifier {
     def applyTo(t: Element) = {
       val nonEmpty = e.map { t => if (t.isEmpty) List(new Comment) else t}
       val fragments = new AtomicReference(nonEmpty())
