@@ -24,3 +24,16 @@ object Example extends JSApp {
 
 }
 ```
+
+Getting Started
+===============
+ScalaTags-Rx is hosted on [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cscalatags-rx),
+to get started, simply add the following to your `build.sbt`:
+
+```scala
+resolvers += Resolver.sonatypeRepo("snapshots")
+
+libraryDependencies += "com.timushev" %% "scalatags-rx" % "0.1.0-SNAPSHOT"
+```
+
+At this moment there are no released stable artifacts, only a snapshot ones.
