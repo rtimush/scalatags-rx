@@ -8,7 +8,6 @@ object Example extends JSApp {
   val c = Var("blue")
   val text = Rx(s"It is a ${c()} text!")
 
-  @JSExport
   def toggle(): Unit = {
     c() = if (c() == "blue") "green" else "blue"
   }
@@ -17,11 +16,11 @@ object Example extends JSApp {
   override def main(): Unit = {
     document.body.appendChild(
       div(
-        color := c, onclick := "scalatags.rx.Example().toggle()",
+        color := c, onclick := toggle _,
         text
       ).render
     )
   }
-  
+
 }
 ```
