@@ -2,6 +2,7 @@ organization := "com.timushev"
 name := "scalatags-rx"
 version := "0.1.0-SNAPSHOT"
 
+crossScalaVersions := Seq("2.10.4", "2.11.5")
 scalaVersion := "2.11.5"
 
 libraryDependencies ++= Seq(
