@@ -1,6 +1,14 @@
+import com.typesafe.sbt.SbtGit.GitKeys._
+
 organization := "com.timushev"
 name := "scalatags-rx"
-version := "0.1.0-SNAPSHOT"
+version := "0.1.0"
+
+version <<= (version, gitCurrentTags) apply {
+  case (v, w :: Nil) if v == w => v
+  case (v, Nil) => s"$v-SNAPSHOT"
+  case _ => fail("Version and tag do not match")
+}
 
 crossScalaVersions := Seq("2.10.4", "2.11.5")
 scalaVersion := "2.11.5"
