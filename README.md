@@ -31,9 +31,14 @@ ScalaTags-Rx is hosted on [Maven Central](http://search.maven.org/#search%7Cga%7
 to get started, simply add the following to your `build.sbt`:
 
 ```scala
-resolvers += Resolver.sonatypeRepo("snapshots")
-
-libraryDependencies += "com.timushev" %% "scalatags-rx" % "0.1.0-SNAPSHOT"
+libraryDependencies += "com.timushev" %%% "scalatags-rx" % "0.1.0"
 ```
 
-At this moment there are no released stable artifacts, only a snapshot ones.
+For the latest development version use:
+
+```scala
+resolvers += Resolver.sonatypeRepo("snapshots")
+
+libraryDependencies += "com.timushev" %%% "scalatags-rx" % "0.2.0-SNAPSHOT"
+```
+=
