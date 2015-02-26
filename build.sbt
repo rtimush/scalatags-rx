@@ -2,7 +2,7 @@ import com.typesafe.sbt.SbtGit.git._
 
 organization := "com.timushev"
 name := "scalatags-rx"
-version := "0.1.0"
+version := "0.2.0"
 
 version <<= (version, gitCurrentTags) apply {
   case (v, w :: Nil) if s"v$v" == w => v
