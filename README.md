@@ -1,4 +1,6 @@
 # scalatags-rx [![Build Status](https://travis-ci.org/rtimush/scalatags-rx.svg?branch=master)](https://travis-ci.org/rtimush/scalatags-rx)
+
+[![Join the chat at https://gitter.im/rtimush/scalatags-rx](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rtimush/scalatags-rx?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ScalaTags-Rx is a small integration layer between [ScalaTags](https://github.com/lihaoyi/scalatags)
 and [Scala.Rx](https://github.com/lihaoyi/scala.rx). It provides a set of type class instances for `Rx[T]` values
 that allows you to use them directly in a ScalaTags DSL with changes automatically propagated to the resulting DOM:
