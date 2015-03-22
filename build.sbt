@@ -10,13 +10,13 @@ version <<= (version, gitCurrentTags) apply {
   case _ => fail("Version and tag do not match")
 }
 
-crossScalaVersions := Seq("2.10.4", "2.11.5")
-scalaVersion := "2.11.5"
+crossScalaVersions := Seq("2.10.5", "2.11.6")
+scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
-  "com.lihaoyi" %%% "scalarx" % "0.2.7",
-  "com.lihaoyi" %%% "scalatags" % "0.4.5",
-  "com.lihaoyi" %%% "utest" % "0.3.0" % "test"
+  "com.lihaoyi" %%% "scalarx" % "0.2.8",
+  "com.lihaoyi" %%% "scalatags" % "0.4.6",
+  "com.lihaoyi" %%% "utest" % "0.3.1" % "test"
 )
 
 testFrameworks += new TestFramework("utest.runner.Framework")
