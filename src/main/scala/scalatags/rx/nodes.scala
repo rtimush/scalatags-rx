@@ -5,11 +5,12 @@ import java.util.concurrent.atomic.AtomicReference
 import org.scalajs.dom
 import org.scalajs.dom.Element
 import org.scalajs.dom.ext._
-import org.scalajs.dom.raw.Comment
-import rx._
-import rx.ops._
+import org.scalajs.dom.raw.{Comment, Node}
 
+import rx._
+import rx.opmacros._
 import scala.collection.immutable
+import scala.collection.immutable.Iterable
 import scala.language.implicitConversions
 import scalatags.JsDom.all._
 import scalatags.jsdom
@@ -17,42 +18,43 @@ import scalatags.rx.ext._
 
 trait RxNodeInstances {
 
-  implicit class rxStringFrag(v: Rx[String]) extends jsdom.Frag {
+  implicit class rxStringFrag(v: Rx[String])(implicit ctx: Ctx.Owner) extends jsdom.Frag {
     def render: dom.Text = {
-      val node = dom.document.createTextNode(v())
+      val node = dom.document.createTextNode(v.now)
       v foreach { s => node.replaceData(0, node.length, s)} attachTo node
       node
     }
   }
 
-  implicit class bindRxElement[T <: dom.Element](e: Rx[T]) extends Modifier {
-    def applyTo(t: Element) = {
-      val element = new AtomicReference(e())
-      t.appendChild(element.get())
-      e foreach( { current =>
-        val previous = element getAndSet current
-        t.replaceChild(current, previous)
-      }, skipInitial = true) attachTo t
+  implicit class bindRxElement[T <: dom.Element](rx: Rx[T])(implicit ctx: Ctx.Owner) extends Modifier {
+    def applyTo(container: Element) = {
+      val atomicReference = new AtomicReference(rx.now)
+      container.appendChild(atomicReference.get())
+      rx.triggerLater {
+        val current = rx.now
+        val previous = atomicReference.getAndSet(current)
+        container.replaceChild(current, previous)
+      }.attachTo(container)
     }
   }
 
-  implicit class bindRxElements(e: Rx[immutable.Iterable[Element]]) extends Modifier {
+  implicit class bindRxElements(e: Rx[immutable.Iterable[Element]])(implicit ctx: Ctx.Owner) extends Modifier {
     def applyTo(t: Element) = {
-      val nonEmpty = e.map { t => if (t.isEmpty) List(new Comment) else t}
-      val fragments = new AtomicReference(nonEmpty())
-      nonEmpty() foreach t.appendChild
-      nonEmpty foreach( { current =>
+      val nonEmpty: Rx[Iterable[Node]] = e.map { t => if (t.isEmpty) List(new Comment) else t }
+      val fragments = new AtomicReference(nonEmpty.now)
+      nonEmpty.now foreach t.appendChild
+      nonEmpty.foreach { current: Iterable[Node] =>
         val previous = fragments getAndSet current
         val i = t.childNodes.indexOf(previous.head)
         if (i < 0) throw new IllegalStateException("Children changed")
-        0 to (previous.size - 1) foreach (_ => t.removeChild(t.childNodes.item(i)))
+        0 until previous.size foreach (_ => t.removeChild(t.childNodes.item(i)))
         if (t.childNodes.length > i) {
           val next = t.childNodes.item(i)
           current foreach (t.insertBefore(_, next))
         } else {
           current foreach t.appendChild
         }
-      }, skipInitial = true)
+      }
     }
   }
 
