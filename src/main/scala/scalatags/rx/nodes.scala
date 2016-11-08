@@ -43,7 +43,8 @@ trait RxNodeInstances {
       val nonEmpty: Rx[Iterable[Node]] = e.map { t => if (t.isEmpty) List(new Comment) else t }
       val fragments = new AtomicReference(nonEmpty.now)
       nonEmpty.now foreach t.appendChild
-      nonEmpty.foreach { current: Iterable[Node] =>
+      nonEmpty.triggerLater {
+        val current: Iterable[Node] = nonEmpty.now
         val previous = fragments getAndSet current
         val i = t.childNodes.indexOf(previous.head)
         if (i < 0) throw new IllegalStateException("Children changed")
