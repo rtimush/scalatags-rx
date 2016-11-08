@@ -2,7 +2,7 @@ import com.typesafe.sbt.SbtGit.git._
 
 organization := "com.timushev"
 name := "scalatags-rx"
-version := "0.2.0"
+version := "0.3.0"
 
 version <<= (version, gitCurrentTags) apply {
   case (v, w :: Nil) if s"v$v" == w => v
@@ -10,12 +10,12 @@ version <<= (version, gitCurrentTags) apply {
   case _ => fail("Version and tag do not match")
 }
 
-crossScalaVersions := Seq("2.10.5", "2.11.6")
-scalaVersion := "2.11.6"
+crossScalaVersions := Seq("2.10.5", "2.11.8")
+scalaVersion := "2.11.8"
 
 libraryDependencies ++= Seq(
-  "com.lihaoyi" %%% "scalarx" % "0.2.8",
-  "com.lihaoyi" %%% "scalatags" % "0.4.6",
+  "com.lihaoyi" %%% "scalarx" % "0.3.2",
+  "com.lihaoyi" %%% "scalatags" % "0.6.1",
   "com.lihaoyi" %%% "utest" % "0.3.1" % "test"
 )
 
