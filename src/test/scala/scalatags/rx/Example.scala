@@ -13,13 +13,12 @@ import rx.Ctx.Owner.Unsafe._
 object Example extends JSApp {
 
   val c = Var("blue")
-  val text = Rx(s"It is a ${c.now} text!")
+  val text = Rx(s"It is a ${c()} text!")
 
   def toggle(): Unit = {
     c() = if (c.now == "blue") "green" else "blue"
   }
 
-  @JSExport
   override def main(): Unit = {
     document.body.appendChild(
       div(
