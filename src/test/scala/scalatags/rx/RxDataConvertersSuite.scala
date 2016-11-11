@@ -13,10 +13,10 @@ object RxDataConvertersSuite extends TestSuite {
     "it should add px for integer" - {
       val a = Var[Int](1)
       "Var" - {
-        assert(a.px() == 1.px)
+        assert(a.px.now == 1.px)
       }
       "Rx" - {
-        assert(a.rx.px() == 1.px)
+        assert(a.rx.px.now == 1.px)
       }
     }
   }

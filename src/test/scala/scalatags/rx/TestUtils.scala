@@ -11,10 +11,10 @@ object TestUtils {
 
   def testRx[T](v: Var[T], f: => T, a: T, b: T): Unit = testRx(v, f, a, b -> b)
 
-  def testRx[S, T](v: Var[S], f: => T, a: T, b: (S, T)): Unit = {
-    assert(f == a)
-    v() = b._1
-    assert(f == b._2)
+  def testRx[S, T](v: Var[S], fn: => T, initial: T, newValue: (S, T)): Unit = {
+    assert(fn == initial)
+    v() = newValue._1
+    assert(fn == newValue._2)
   }
 
 

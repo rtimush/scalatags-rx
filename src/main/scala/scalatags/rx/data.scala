@@ -1,10 +1,8 @@
 package scalatags.rx
 
 import rx._
-import rx.ops._
 
 import scala.language.implicitConversions
-import scalatags.DataConverters._
 
 trait RxDataConverters {
 
@@ -18,20 +16,20 @@ trait RxDataConverters {
 }
 
 class RxCssNumber[T](val x: Rx[T]) extends AnyVal {
-  def px = x map (_ + "px")
-  def pt = x map (_ + "pt")
-  def mm = x map (_ + "mm")
-  def cm = x map (_ + "cm")
-  def in = x map (_ + "in")
-  def pc = x map (_ + "pc")
-  def em = x map (_ + "em")
-  def ch = x map (_ + "ch")
-  def ex = x map (_ + "ex")
-  def rem = x map (_ + "rem")
-  def deg = x map (_ + "deg")
-  def grad = x map (_ + "grad")
-  def rad = x map (_ + "rad")
-  def turn = x map (_ + "turn")
-  def pct = x map (_ + "pct")
+  def px(implicit ctx: Ctx.Owner) = x map (_ + "px")
+  def pt(implicit ctx: Ctx.Owner) = x map (_ + "pt")
+  def mm(implicit ctx: Ctx.Owner) = x map (_ + "mm")
+  def cm(implicit ctx: Ctx.Owner) = x map (_ + "cm")
+  def in(implicit ctx: Ctx.Owner) = x map (_ + "in")
+  def pc(implicit ctx: Ctx.Owner) = x map (_ + "pc")
+  def em(implicit ctx: Ctx.Owner) = x map (_ + "em")
+  def ch(implicit ctx: Ctx.Owner) = x map (_ + "ch")
+  def ex(implicit ctx: Ctx.Owner) = x map (_ + "ex")
+  def rem(implicit ctx: Ctx.Owner) = x map (_ + "rem")
+  def deg(implicit ctx: Ctx.Owner) = x map (_ + "deg")
+  def grad(implicit ctx: Ctx.Owner) = x map (_ + "grad")
+  def rad(implicit ctx: Ctx.Owner) = x map (_ + "rad")
+  def turn(implicit ctx: Ctx.Owner) = x map (_ + "turn")
+  def pct(implicit ctx: Ctx.Owner) = x map (_ + "pct")
 }
 

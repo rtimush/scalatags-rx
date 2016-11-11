@@ -9,10 +9,9 @@ object Example extends JSApp {
   val text = Rx(s"It is a ${c()} text!")
 
   def toggle(): Unit = {
-    c() = if (c() == "blue") "green" else "blue"
+    c() = if (c.now == "blue") "green" else "blue"
   }
 
-  @JSExport
   override def main(): Unit = {
     document.body.appendChild(
       div(

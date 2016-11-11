@@ -36,22 +36,22 @@ object RxNodeInstancesSuite extends TestSuite {
       val c = Var[Element](div().render)
       "Var" - {
         val node = div(c).render
-        testRx(c, node.innerHTML, "<div/>", span().render -> "<span/>")
+        testRx(c, node.innerHTML, "<div></div>", span().render -> "<span></span>")
       }
       "Rx" - {
         val node = div(c.rx).render
-        testRx(c, node.innerHTML, "<div/>", span().render -> "<span/>")
+        testRx(c, node.innerHTML, "<div></div>", span().render -> "<span></span>")
       }
     }
     "child node sequence" - {
       val c = Var[Vector[Element]](Vector(div().render))
       "Var" - {
         val node = div(c).render
-        testRx(c, node.innerHTML, "<div/>", Vector(span().render) -> "<span/>")
+        testRx(c, node.innerHTML, "<div></div>", Vector(span().render) -> "<span></span>")
       }
       "Rx" - {
         val node = div(c.rx).render
-        testRx(c, node.innerHTML, "<div/>", Vector(span().render) -> "<span/>")
+        testRx(c, node.innerHTML, "<div></div>", Vector(span().render) -> "<span></span>")
       }
     }
     "child node sequences join" - {
@@ -61,12 +61,12 @@ object RxNodeInstancesSuite extends TestSuite {
       "first to last" - {
         c() = Vector(div().render)
         d() = Vector(span().render)
-        assert(node.innerHTML == "<div/><span/>")
+        assert(node.innerHTML == "<div></div><span></span>")
       }
       "last to first" - {
         d() = Vector(span().render)
         c() = Vector(div().render)
-        assert(node.innerHTML == "<div/><span/>")
+        assert(node.innerHTML == "<div></div><span></span>")
       }
     }
   }
