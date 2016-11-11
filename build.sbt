@@ -4,10 +4,12 @@ organization := "com.timushev"
 name := "scalatags-rx"
 version := "0.3.0"
 
-version <<= (version, gitCurrentTags) apply {
-  case (v, w :: Nil) if s"v$v" == w => v
-  case (v, Nil) => s"$v-SNAPSHOT"
-  case _ => fail("Version and tag do not match")
+version := {
+  (version.value, gitCurrentTags.value) match {
+    case (v, w :: Nil) if s"v$v" == w => v
+    case (v, Nil) => s"$v-SNAPSHOT"
+    case _ => fail("Version and tag do not match")
+  }
 }
 
 crossScalaVersions := Seq("2.10.5", "2.11.8")
