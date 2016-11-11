@@ -17,8 +17,8 @@ scalaVersion := "2.11.8"
 
 libraryDependencies ++= Seq(
   "com.lihaoyi" %%% "scalarx" % "0.3.2",
-  "com.lihaoyi" %%% "scalatags" % "0.6.1",
-  "com.lihaoyi" %%% "utest" % "0.3.1" % "test"
+  "com.lihaoyi" %%% "scalatags" % "0.6.2",
+  "com.lihaoyi" %%% "utest" % "0.4.4" % "test"
 )
 
 testFrameworks += new TestFramework("utest.runner.Framework")

@@ -2,7 +2,6 @@ package scalatags.rx
 
 import rx._
 import utest._
-import utest.framework.TestSuite
 
 import scalatags.DataConverters._
 import scalatags.rx.TestUtils._

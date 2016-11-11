@@ -3,7 +3,6 @@ package scalatags.rx
 import org.scalajs.dom.Element
 import rx._
 import utest._
-import utest.framework.TestSuite
 
 import scalatags.JsDom.all._
 import scalatags.rx.TestUtils._
