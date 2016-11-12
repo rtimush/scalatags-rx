@@ -20,6 +20,10 @@ object RxStyleInstancesSuite extends TestSuite {
         val node = div(color := c.rx).render
         testRx(c, node.style.getPropertyValue("color"), "blue", "green")
       }
+      "Rx.Dynamic" - {
+        val node = div(color := Rx(c())).render
+        testRx(c, node.style.getPropertyValue("color"), "blue", "green")
+      }
     }
     "string pixel style" - {
       val c = Var("10px")
@@ -31,6 +35,10 @@ object RxStyleInstancesSuite extends TestSuite {
         val node = div(width := c.rx).render
         testRx(c, node.style.getPropertyValue("width"), "10px", "20px")
       }
+      "Rx.Dynamic" - {
+        val node = div(width := Rx(c())).render
+        testRx(c, node.style.getPropertyValue("width"), "10px", "20px")
+      }
     }
     "int pixel style" - {
       val c = Var(10)
@@ -40,6 +48,10 @@ object RxStyleInstancesSuite extends TestSuite {
       }
       "Rx" - {
         val node = div(width := c.rx).render
+        testRx(c, node.style.getPropertyValue("width"), "10px", 20 -> "20px")
+      }
+      "Rx.Dynamic" - {
+        val node = div(width := Rx(c())).render
         testRx(c, node.style.getPropertyValue("width"), "10px", 20 -> "20px")
       }
     }

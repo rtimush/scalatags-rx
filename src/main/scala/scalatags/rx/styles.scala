@@ -2,7 +2,6 @@ package scalatags.rx
 
 import org.scalajs.dom._
 import rx._
-import rx.opmacros._
 
 import scala.language.implicitConversions
 import scalatags.JsDom.all._
@@ -18,6 +17,15 @@ trait RxStyleInstances {
   implicit def varIsRxForPixelStyleValue[T](implicit x: PixelStyleValue[Rx[T]], ctx: Ctx.Owner): PixelStyleValue[Var[T]] =
     new PixelStyleValue[Var[T]] {
       override def apply(s: Style, v: Var[T]): StylePair[Element, _] = x.apply(s, v)
+    }
+
+  implicit def rxDynIsRxForStyleValue[T](implicit x: StyleValue[Rx[T]], ctx: Ctx.Owner): StyleValue[Rx.Dynamic[T]] =
+    new StyleValue[Rx.Dynamic[T]] {
+      override def apply(t: Element, s: Style, v: Rx.Dynamic[T]): Unit = x.apply(t, s, v)
+    }
+  implicit def rxDynIsRxForPixelStyleValue[T](implicit x: PixelStyleValue[Rx[T]], ctx: Ctx.Owner): PixelStyleValue[Rx.Dynamic[T]] =
+    new PixelStyleValue[Rx.Dynamic[T]] {
+      override def apply(s: Style, v: Rx.Dynamic[T]): StylePair[Element, _] = x.apply(s, v)
     }
 
   implicit def rxStyleValue[T: StyleValue](implicit ctx: Ctx.Owner): StyleValue[Rx[T]] = new RxStyleValue[T]

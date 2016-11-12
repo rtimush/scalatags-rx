@@ -20,6 +20,11 @@ object RxAttrInstancesSuite extends TestSuite {
         val node = div(widthA := c.rx).render
         testRx(c, node.getAttribute("width"), "10px", "20px")
       }
+      "Rx.Dynamic" - {
+        val direction = Var("up")
+        val node = div(cls := Rx("icon-chevron-" + direction())).render
+        testRx(direction, node.getAttribute("class"), "icon-chevron-up", "down" -> "icon-chevron-down")
+      }
     }
     "int attribute" - {
       val c = Var(10)
@@ -29,6 +34,10 @@ object RxAttrInstancesSuite extends TestSuite {
       }
       "Rx" - {
         val node = div(widthA := c.rx).render
+        testRx(c, node.getAttribute("width"), "10", 20 -> "20")
+      }
+      "Rx.Dynamic" - {
+        val node = div(widthA := Rx(c())).render
         testRx(c, node.getAttribute("width"), "10", 20 -> "20")
       }
     }
