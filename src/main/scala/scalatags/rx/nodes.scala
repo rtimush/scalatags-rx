@@ -13,16 +13,18 @@ import scala.collection.immutable
 import scala.collection.immutable.Iterable
 import scala.language.implicitConversions
 import scalatags.JsDom.all._
-import scalatags.jsdom
 import scalatags.rx.ext._
 
 trait RxNodeInstances {
 
-  implicit class rxStringFrag(v: Rx[String])(implicit ctx: Ctx.Owner) extends jsdom.Frag {
+  implicit class rxStringFrag(v: Rx[String])(implicit ctx: Ctx.Owner) extends Frag {
     def render: dom.Text = {
       val node = dom.document.createTextNode(v.now)
-      v foreach { s => node.replaceData(0, node.length, s)} attachTo node
+      v foreach { s => node.replaceData(0, node.length, s)}
       node
+    }
+    def applyTo(t: Element) = {
+      t.appendChild(render)
     }
   }
 
