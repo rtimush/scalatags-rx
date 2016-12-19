@@ -17,6 +17,9 @@ object RxDataConvertersSuite extends TestSuite {
       "Rx" - {
         assert(a.rx.px.now == 1.px)
       }
+      "Rx.Dynamic" - {
+        assert(Rx(a()).px.now == 1.px)
+      }
     }
   }
 }

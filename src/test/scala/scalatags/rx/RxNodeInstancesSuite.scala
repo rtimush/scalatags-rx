@@ -21,6 +21,10 @@ object RxNodeInstancesSuite extends TestSuite {
         val node = span(c.rx).render
         testRx(c, node.textContent, "a", "b")
       }
+      "Rx.Dyn" - {
+        val node = span(Rx(c())).render
+        testRx(c, node.textContent, "a", "b")
+      }
     }
     "text node join" - {
       val c = Var("")
@@ -41,6 +45,10 @@ object RxNodeInstancesSuite extends TestSuite {
         val node = div(c.rx).render
         testRx(c, node.innerHTML, "<div></div>", span().render -> "<span></span>")
       }
+      "Rx.Dynamic" - {
+        val node = div(Rx(c())).render
+        testRx(c, node.innerHTML, "<div></div>", span().render -> "<span></span>")
+      }
     }
     "child node sequence" - {
       val c = Var[Vector[Element]](Vector(div().render))
@@ -50,6 +58,10 @@ object RxNodeInstancesSuite extends TestSuite {
       }
       "Rx" - {
         val node = div(c.rx).render
+        testRx(c, node.innerHTML, "<div></div>", Vector(span().render) -> "<span></span>")
+      }
+      "Rx.Dynamic" - {
+        val node = div(Rx(c())).render
         testRx(c, node.innerHTML, "<div></div>", Vector(span().render) -> "<span></span>")
       }
     }
