@@ -6,7 +6,6 @@ import rx._
 import scala.language.implicitConversions
 import scalatags.JsDom.all._
 import scalatags.generic.{Style, StylePair}
-import scalatags.rx.ext._
 
 trait RxStyleInstances {
 
@@ -44,7 +43,7 @@ trait RxStyleInstances {
 
   class RxStyleValue[T](implicit sv: StyleValue[T], ctx: Ctx.Owner) extends StyleValue[Rx[T]] {
     override def apply(t: Element, s: Style, rv: Rx[T]): Unit = {
-      rv foreach { v => sv.apply(t, s, v)} attachTo t
+      rv foreach { v => sv.apply(t, s, v)}
     }
   }
 

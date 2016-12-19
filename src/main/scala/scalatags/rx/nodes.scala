@@ -6,14 +6,12 @@ import org.scalajs.dom
 import org.scalajs.dom.Element
 import org.scalajs.dom.ext._
 import org.scalajs.dom.raw.{Comment, Node}
-
 import rx._
-import rx.opmacros._
+
 import scala.collection.immutable
 import scala.collection.immutable.Iterable
 import scala.language.implicitConversions
 import scalatags.JsDom.all._
-import scalatags.rx.ext._
 
 trait RxNodeInstances {
 
@@ -36,7 +34,7 @@ trait RxNodeInstances {
         val current = rx.now
         val previous = atomicReference.getAndSet(current)
         container.replaceChild(current, previous)
-      }.attachTo(container)
+      }
     }
   }
 

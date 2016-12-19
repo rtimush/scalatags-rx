@@ -4,7 +4,6 @@ import org.scalajs.dom.Element
 import rx._
 
 import scalatags.JsDom.all._
-import scalatags.rx.ext._
 
 trait RxAttrInstances {
 
@@ -14,7 +13,7 @@ trait RxAttrInstances {
 
   class RxAttrValue[T, F <: Rx[T]](implicit av: AttrValue[T], ctx: Ctx.Owner) extends AttrValue[F] {
     override def apply(t: Element, a: Attr, rv: F): Unit = {
-      rv foreach { v => av.apply(t, a, v)} attachTo t
+      rv foreach { v => av.apply(t, a, v)}
     }
   }
 
