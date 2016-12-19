@@ -12,8 +12,8 @@ version := {
   }
 }
 
-crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0")
-scalaVersion := "2.12.0"
+crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.1")
+scalaVersion := "2.12.1"
 
 libraryDependencies ++= Seq(
   "com.lihaoyi" %%% "scalarx" % "0.3.2",
