@@ -1,3 +1,6 @@
+enablePlugins(GitVersioning)
+enablePlugins(ScalaJSPlugin)
+
 import com.typesafe.sbt.SbtGit.git._
 
 organization := "com.timushev"
@@ -8,12 +11,12 @@ version := {
   (version.value, gitCurrentTags.value) match {
     case (v, w :: Nil) if s"v$v" == w => v
     case (v, Nil) => s"$v-SNAPSHOT"
-    case _ => fail("Version and tag do not match")
+    case _ => throw new IllegalArgumentException("Version and tag do not match")
   }
 }
 
-crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.1")
-scalaVersion := "2.12.1"
+crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.6")
+scalaVersion := "2.12.6"
 
 def scalaRxVersion(scalaVersion: String): String =
     CrossVersion.partialVersion(scalaVersion) match {
@@ -23,12 +26,11 @@ def scalaRxVersion(scalaVersion: String): String =
 
 libraryDependencies ++= Seq(
   "com.lihaoyi" %%% "scalarx" % scalaRxVersion(scalaVersion.value),
-  "com.lihaoyi" %%% "scalatags" % "0.6.2",
-  "com.lihaoyi" %%% "utest" % "0.4.4" % "test"
+  "com.lihaoyi" %%% "scalatags" % "0.6.7",
+  "com.lihaoyi" %%% "utest" % "0.6.6" % "test"
 )
 
 testFrameworks += new TestFramework("utest.runner.Framework")
-jsEnv := new org.scalajs.jsenv.nodejs.NodeJSEnv()
-requiresDOM := true
+jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv()
 
 lazy val `scalatags-rx` = project in file(".") enablePlugins ScalaJSPlugin
