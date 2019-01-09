@@ -28,7 +28,7 @@ libraryDependencies ++= Seq(
 )
 
 testFrameworks += new TestFramework("utest.runner.Framework")
-
+jsEnv := new org.scalajs.jsenv.nodejs.NodeJSEnv()
 requiresDOM := true
 
 lazy val `scalatags-rx` = project in file(".") enablePlugins ScalaJSPlugin
