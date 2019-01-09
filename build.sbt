@@ -2,7 +2,7 @@ import com.typesafe.sbt.SbtGit.git._
 
 organization := "com.timushev"
 name := "scalatags-rx"
-version := "0.3.1"
+version := "0.3.0"
 
 version := {
   (version.value, gitCurrentTags.value) match {
@@ -15,8 +15,14 @@ version := {
 crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.1")
 scalaVersion := "2.12.1"
 
+def scalaRxVersion(scalaVersion: String): String =
+    CrossVersion.partialVersion(scalaVersion) match {
+      case Some((2, 10)) => "0.3.2"
+      case _ => "0.4.0"
+    }
+
 libraryDependencies ++= Seq(
-  "com.lihaoyi" %%% "scalarx" % "0.4.0",
+  "com.lihaoyi" %%% "scalarx" % scalaRxVersion(scalaVersion.value),
   "com.lihaoyi" %%% "scalatags" % "0.6.2",
   "com.lihaoyi" %%% "utest" % "0.4.4" % "test"
 )
