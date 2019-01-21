@@ -5,7 +5,7 @@ import com.typesafe.sbt.SbtGit.git._
 
 organization := "com.timushev"
 name := "scalatags-rx"
-version := "0.3.0"
+version := "0.4.0"
 
 version := {
   (version.value, gitCurrentTags.value) match {
