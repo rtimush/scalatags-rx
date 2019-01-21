@@ -3,6 +3,8 @@ ScalaTags-Rx is a small integration layer between [ScalaTags](https://github.com
 and [Scala.Rx](https://github.com/lihaoyi/scala.rx). It provides a set of type class instances for `Rx[T]` values
 that allows you to use them directly in a ScalaTags DSL with changes automatically propagated to the resulting DOM:
 ```scala
+import scalatags.rx.all._
+
 object Example extends JSApp {
 
   val c = Var("blue")
@@ -40,4 +42,3 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 
 libraryDependencies += "com.timushev" %%% "scalatags-rx" % "0.4.1-SNAPSHOT"
 ```
-=
