@@ -1,36 +1,21 @@
-enablePlugins(GitVersioning)
-enablePlugins(ScalaJSPlugin)
+ThisBuild / organization := "com.timushev"
+ThisBuild / gitVersioningSnapshotLowerBound := Some("0.5.0")
 
-import com.typesafe.sbt.SbtGit.git._
+lazy val `scalatags-rx` = (projectMatrix in file("."))
+  .enablePlugins(SemVerPlugin)
+  .enablePlugins(ScalaJSPlugin)
+  .settings(
+    name := "scalatags-rx",
+    libraryDependencies ++= Seq(
+      "com.lihaoyi" %%% "scalarx" % "0.4.3",
+      "com.lihaoyi" %%% "scalatags" % "0.9.1",
+      "com.lihaoyi" %%% "utest" % "0.7.4" % "test"
+    ),
+    testFrameworks += new TestFramework("utest.runner.Framework"),
+    jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv()
+  )
+  .jsPlatform(scalaVersions = Seq("2.12.11", "2.13.3"))
 
-organization := "com.timushev"
-name := "scalatags-rx"
-version := "0.4.1"
-
-version := {
-  (version.value, gitCurrentTags.value) match {
-    case (v, w :: Nil) if s"v$v" == w => v
-    case (v, Nil) => s"$v-SNAPSHOT"
-    case _ => throw new IllegalArgumentException("Version and tag do not match")
-  }
-}
-
-crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.6")
-scalaVersion := "2.12.6"
-
-def scalaRxVersion(scalaVersion: String): String =
-    CrossVersion.partialVersion(scalaVersion) match {
-      case Some((2, 10)) => "0.3.2"
-      case _ => "0.4.0"
-    }
-
-libraryDependencies ++= Seq(
-  "com.lihaoyi" %%% "scalarx" % scalaRxVersion(scalaVersion.value),
-  "com.lihaoyi" %%% "scalatags" % "0.6.7",
-  "com.lihaoyi" %%% "utest" % "0.6.6" % "test"
-)
-
-testFrameworks += new TestFramework("utest.runner.Framework")
-jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv()
-
-lazy val `scalatags-rx` = project in file(".") enablePlugins ScalaJSPlugin
+lazy val root = (project in file("."))
+  .aggregate(`scalatags-rx`.projectRefs: _*)
+  .settings(publish / skip := true, compile / skip := true)
