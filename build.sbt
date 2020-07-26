@@ -1,5 +1,6 @@
 ThisBuild / organization := "com.timushev"
 ThisBuild / gitVersioningSnapshotLowerBound := Some("0.5.0")
+ThisBuild / publishTo := sonatypePublishToBundle.value
 
 lazy val `scalatags-rx` = (projectMatrix in file("."))
   .enablePlugins(SemVerPlugin)
