@@ -9,8 +9,8 @@ lazy val `scalatags-rx` = (projectMatrix in file("."))
     name := "scalatags-rx",
     libraryDependencies ++= Seq(
       "com.lihaoyi" %%% "scalarx" % "0.4.3",
-      "com.lihaoyi" %%% "scalatags" % "0.9.2",
-      "com.lihaoyi" %%% "utest" % "0.7.5" % "test"
+      "com.lihaoyi" %%% "scalatags" % "0.9.1",
+      "com.lihaoyi" %%% "utest" % "0.7.6" % "test"
     ),
     testFrameworks += new TestFramework("utest.runner.Framework"),
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv()
