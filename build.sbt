@@ -15,7 +15,7 @@ lazy val `scalatags-rx` = (projectMatrix in file("."))
     testFrameworks += new TestFramework("utest.runner.Framework"),
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv()
   )
-  .jsPlatform(scalaVersions = Seq("2.12.11", "2.13.3"))
+  .jsPlatform(scalaVersions = Seq("2.12.11", "2.13.5"))
 
 lazy val root = (project in file("."))
   .aggregate(`scalatags-rx`.projectRefs: _*)
