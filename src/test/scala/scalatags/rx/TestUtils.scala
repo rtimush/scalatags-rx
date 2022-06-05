@@ -14,8 +14,13 @@ object TestUtils {
   def testRx[S, T](v: Var[S], fn: => T, initial: T, newValue: (S, T)): Unit = {
     assert(fn == initial)
     v() = newValue._1
-    assert(fn == newValue._2)
-  }
+    
+    // scalarx is asynchronous in nature. Check a few times if given a false negative.
+    def hasChanged(rt: Int): Boolean = {
+      fn == newValue._2 || rt > 0 && hasChanged(rt - 1)
+    }
 
+    hasChanged(3)
+  }
 
 }
