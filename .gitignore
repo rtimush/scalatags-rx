@@ -1,2 +1,7 @@
+.bsp/
+.metals/
+.bloop/
 target/
 node_modules/
+metals.sbt
+yarn.lock

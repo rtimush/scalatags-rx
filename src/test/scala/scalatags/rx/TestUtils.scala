@@ -17,5 +17,4 @@ object TestUtils {
     assert(fn == newValue._2)
   }
 
-
 }
