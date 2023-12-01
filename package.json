@@ -1,5 +1,5 @@
 {
   "devDependencies": {
-    "jsdom": "^16.7.0"
+    "jsdom": "^23.0.1"
   }
 }
